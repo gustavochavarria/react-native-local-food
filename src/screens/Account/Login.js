@@ -14,13 +14,13 @@ export default function Login() {
 
       <View style={styles.viewContainer}>
         {/* login form */}
+
         <Text style={styles.textRegister}>
-          Do not have an account yet?
+          Do not have an account yet?{" "}
           <Text
             style={styles.btnRegister}
             onPress={() => {
-              console.log("press");
-              navigation.navigate("restaurants");
+              navigation.navigate("register");
             }}
           >
             Register here
