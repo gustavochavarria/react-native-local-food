@@ -34,7 +34,7 @@ export default function Navigation() {
   return (
     <NavigationContainer>
       <Tab.Navigator
-        initialRouteName="restaurants"
+        initialRouteName="restaurants-tab"
         screenOptions={({ route }) => ({
           inactiveTintColor: "#646464",
           activeTintColor: "#00a680",
@@ -42,17 +42,17 @@ export default function Navigation() {
         })}
       >
         <Tab.Screen
-          name="restaurants"
+          name="restaurants-tab"
           component={RestaurantsStack}
           options={{ title: "Restaurants" }}
         />
         <Tab.Screen
-          name="favorites"
+          name="favorites-tab"
           component={FavoritesStack}
           options={{ title: "Favorites" }}
         />
         <Tab.Screen
-          name="account"
+          name="account-tab"
           component={AccountStack}
           options={{ title: "Account" }}
         />
