@@ -1,5 +1,6 @@
 import { View, ScrollView, Text, Image, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
+import LoginForm from "../../components/Account/LoginForm";
 
 export default function Login() {
   const navigation = useNavigation();
@@ -13,7 +14,7 @@ export default function Login() {
       />
 
       <View style={styles.viewContainer}>
-        {/* login form */}
+        <LoginForm />
 
         <Text style={styles.textRegister}>
           Do not have an account yet?{" "}
