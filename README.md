@@ -7,7 +7,7 @@ You can see, update/remove, and add new restaurants to the app.
 
 - 6 Different views
 - React Navigation (with tabs)
-<!-- - Login with firebase
+- Login with firebase
 - Forms with Formik and Yup
-- Geolocalization (and Maps)
+<!-- - Geolocalization (and Maps)
 - Using React Native Elements -->
