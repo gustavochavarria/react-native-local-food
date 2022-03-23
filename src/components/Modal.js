@@ -7,8 +7,6 @@ export default function Modal(props) {
   return (
     <Overlay
       isVisible={show}
-      windowBackgroundColor="rgba(0,0,0,0.5)"
-      overlayBackgroundColor="transparent"
       overlayStyle={styles.overlay}
       onBackdropPress={() => close()}
     >
@@ -17,4 +15,9 @@ export default function Modal(props) {
   );
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  overlay: {
+    width: "80%",
+    backgroundColor: "white",
+  },
+});

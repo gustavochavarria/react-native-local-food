@@ -20,7 +20,7 @@ export default function RegisterForm() {
       password: "",
       repeatPassword: "",
     },
-    validationSchema: Yup.object().shape({
+    validationSchema: object().shape({
       email: Yup.string().email("Invalid Email").required(),
       password: Yup.string().min(6, "6 character min").required(),
       repeatPassword: Yup.string().required(),

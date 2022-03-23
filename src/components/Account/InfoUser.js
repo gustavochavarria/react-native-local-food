@@ -22,6 +22,13 @@ export default function InfoUser() {
       >
         <Avatar.Accessory size={24} onPress={() => {}} />
       </Avatar>
+
+      <View>
+        <Text style={styles.displayName}>
+          {displayName ? displayName : "Anónimo"}
+        </Text>
+        <Text>{email}</Text>
+      </View>
     </View>
   );
 }
