@@ -1,7 +1,5 @@
 import { useState } from "react";
-
 import { View, Text, StyleSheet } from "react-native";
-
 import { Avatar } from "@react-native-elements/base";
 
 import { getAuth } from "firebase/auth";

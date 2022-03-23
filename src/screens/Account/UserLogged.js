@@ -1,17 +1,12 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  TextInput,
-} from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 
 import { getAuth, signOut } from "firebase/auth";
 import AccountOptions from "../../components/Account/AccountOptions";
 import InfoUser from "../../components/Account/InfoUser";
+import { useState } from "react";
 
 export default function UserLogged() {
-  let key = 1;
+  const [_, setReload] = useState(false);
 
   const _onPress = () => {
     const auth = getAuth();
@@ -22,10 +17,14 @@ export default function UserLogged() {
   };
 
   return (
-    <View key={key}>
+    <View>
       <InfoUser />
 
-      <AccountOptions onReload={() => key++} />
+      <AccountOptions
+        onReload={() => {
+          setReload((prevState) => !prevState);
+        }}
+      />
 
       <TouchableOpacity style={styles.closeSession} onPress={_onPress}>
         <Text style={styles.btnText}>Sign Out</Text>
