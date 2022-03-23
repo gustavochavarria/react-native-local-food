@@ -7,11 +7,11 @@ import {
 } from "react-native";
 
 import { getAuth, signOut } from "firebase/auth";
+import AccountOptions from "../../components/Account/AccountOptions";
+import InfoUser from "../../components/Account/InfoUser";
 
 export default function UserLogged() {
   const _onPress = () => {
-    console.log("on press");
-
     const auth = getAuth();
 
     signOut(auth).then(() => {
@@ -21,7 +21,9 @@ export default function UserLogged() {
 
   return (
     <View>
-      <Text>Logged</Text>
+      <InfoUser />
+
+      <AccountOptions />
 
       <TouchableOpacity style={styles.closeSession} onPress={_onPress}>
         <Text style={styles.btnText}>Sign Out</Text>

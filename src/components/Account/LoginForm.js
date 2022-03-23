@@ -26,11 +26,13 @@ export default function LoginForm() {
     onSubmit: (values) => {
       const auth = getAuth(app);
 
-      signInWithEmailAndPassword(auth, values.email, values.password).then(
-        () => {
+      signInWithEmailAndPassword(auth, values.email, values.password)
+        .then(() => {
           navigation.navigate("account");
-        }
-      );
+        })
+        .catch((err) => {
+          console.log({ err });
+        });
     },
   });
 
