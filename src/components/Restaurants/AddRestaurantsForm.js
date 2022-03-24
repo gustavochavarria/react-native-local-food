@@ -3,6 +3,7 @@ import React from "react";
 import { useFormik } from "formik";
 
 import { Button, Input } from "@react-native-elements/base";
+import UploadImage from "./UploadImage";
 
 export default function AddRestaurants() {
   const formik = useFormik({
@@ -10,6 +11,7 @@ export default function AddRestaurants() {
       name: "",
       address: "",
       description: "",
+      images: [],
     },
     onSubmit: (values) => {
       console.log({ values });
@@ -18,8 +20,6 @@ export default function AddRestaurants() {
 
   return (
     <View>
-      <Text>AddRestaurants</Text>
-
       <Input
         placeholder="Name"
         onChangeText={(txt) => formik.setFieldValue("name", txt)}
@@ -34,6 +34,8 @@ export default function AddRestaurants() {
         placeholder="Description"
         onChangeText={(txt) => formik.setFieldValue("description", txt)}
       />
+
+      <UploadImage formik={formik} />
 
       <Button title="Create Restaurant" onPress={formik.handleSubmit} />
     </View>
