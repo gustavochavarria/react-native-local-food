@@ -9,5 +9,7 @@ You can see, update/remove, and add new restaurants to the app.
 - React Navigation (with tabs)
 - Login with firebase
 - Forms with Formik and Yup
+- Using React Native Elements
+- 
 <!-- - Geolocalization (and Maps)
-- Using React Native Elements -->
+ -->
