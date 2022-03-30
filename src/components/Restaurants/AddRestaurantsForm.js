@@ -6,6 +6,8 @@ import { Button, Image, Input } from "@react-native-elements/base";
 import * as Yup from "yup";
 
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+
+// import 'react-native-get-random-values'
 import { v4 as uuid } from "uuid";
 
 import UploadImage from "./UploadImage";
@@ -21,28 +23,27 @@ const getColorIconMap = (formik) => {
 
 const widthScreen = Dimensions.get("window").width;
 
+const uploadImage = async (uri) => {
+  const response = await fetch(uri);
+  const blob = await response.blob();
+
+  const storage = getStorage();
+  const storageRef = ref(storage, `restaurants/${uuid()}`);
+
+  const snapshot = await uploadBytes(storageRef, blob);
+
+  const imageRef = ref(storage, snapshot.metadata.fullPath);
+  const imageUrl = await getDownloadURL(imageRef);
+
+  console.log("url firebase: ", imageUrl);
+
+  return imageUrl;
+};
+
 export default function AddRestaurants() {
   const [showMap, setShowMap] = useState(false);
 
   const onOpenCloseMap = () => setShowMap((prevState) => !prevState);
-
-  const uploadImage = async (uri) => {
-    const response = await fetch(uri);
-    const blob = await response.blob();
-
-    const storage = getStorage();
-    const storageRef = ref(storage, `restaurants/${uuid()}`);
-
-    uploadBytes(storageRef, blob).then((snapshot) => {
-      const imagePath = snapshot.metadata.fullPath;
-
-      const imageRef = ref(storage, imagePath);
-      const imageUrl = await getDownloadURL(imageRef);
-
-      formik.setFieldValue('uploadedImages', [...formik.values.uploadedImages, imageUrl]);
-
-    });
-  };
 
   const formik = useFormik({
     initialValues: {
@@ -50,26 +51,25 @@ export default function AddRestaurants() {
       address: "",
       description: "",
       images: [],
-      uploadedImages: []
     },
     validationSchema: Yup.object().shape({
       name: Yup.string().required(),
       address: Yup.string().required(),
-      description: Yup.string().required(),
+      description: Yup.string(),
     }),
-    onSubmit: (values) => {
-      console.log({ values });
+    onSubmit: async (values) => {
+      const { images } = values;
 
-      const {images} = values;
+      let uploadedImages = [];
 
-      images.forEach(async (uri) => {
-        await uploadImage(uri)
-      });
-    
+      for (const uri of images) {
+        const imgUri = await uploadImage(uri);
+        uploadedImages.push(imgUri);
+      }
+
+      console.log("uploaded Images: ", uploadedImages);
     },
   });
-
-  console.log("images: ", formik.values.images[0]);
 
   return (
     <View>

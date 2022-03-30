@@ -1,5 +1,4 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import "react-native-get-random-values";
 
 import { initFirebase } from "./src/utils/firebase";
 
