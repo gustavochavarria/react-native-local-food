@@ -27,11 +27,11 @@ export default function MapForm(props) {
         return;
       }
 
-      const loc = await Location.getCurrentPositionAsync();
+      const { coords } = await Location.getCurrentPositionAsync();
 
       setLocation({
-        latitude: location.coords.latitude,
-        longitude: location.coords.longitude,
+        latitude: coords.latitude,
+        longitude: coords.longitude,
         latitudeDelta: 0.001,
         longitudeDelta: 0.001,
       });
