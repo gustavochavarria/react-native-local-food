@@ -28,13 +28,6 @@ export default function UploadImage(props) {
     formik.setFieldValue("images", filtered);
   };
 
-  const uploadImage = async (uri) => {
-    const response = await fetch(uri);
-    const blob = await response.blob();
-
-    //will back
-  };
-
   return (
     <View style={styles.viewImages}>
       {formik.values.images.length < 4 && (

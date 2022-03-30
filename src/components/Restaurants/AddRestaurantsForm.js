@@ -2,10 +2,15 @@ import { View, StyleSheet, Dimensions, Text } from "react-native";
 import { useState } from "react";
 import { useFormik } from "formik";
 
-import { Button, Image, Input } from "@react-native-elements/base";
+import { Button, Image, Input, Dialog } from "@react-native-elements/base";
 import * as Yup from "yup";
 
+import { useNavigation } from "@react-navigation/native";
+
+//firebase
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { doc, setDoc } from "firebase/firestore";
+import { db } from "../../utils/firebase";
 
 // import 'react-native-get-random-values'
 import { v4 as uuid } from "uuid";
@@ -35,12 +40,11 @@ const uploadImage = async (uri) => {
   const imageRef = ref(storage, snapshot.metadata.fullPath);
   const imageUrl = await getDownloadURL(imageRef);
 
-  console.log("url firebase: ", imageUrl);
-
   return imageUrl;
 };
 
 export default function AddRestaurants() {
+  const navigation = useNavigation();
   const [showMap, setShowMap] = useState(false);
 
   const onOpenCloseMap = () => setShowMap((prevState) => !prevState);
@@ -58,16 +62,20 @@ export default function AddRestaurants() {
       description: Yup.string(),
     }),
     onSubmit: async (values) => {
-      const { images } = values;
+      const { images, ...rest } = values;
 
-      let uploadedImages = [];
+      rest.images = [];
 
       for (const uri of images) {
         const imgUri = await uploadImage(uri);
-        uploadedImages.push(imgUri);
+        rest.images.push(imgUri);
       }
 
-      console.log("uploaded Images: ", uploadedImages);
+      const id = uuid();
+
+      await setDoc(doc(db, "restaurants", id), rest);
+
+      navigation.goBack();
     },
   });
 
@@ -111,6 +119,11 @@ export default function AddRestaurants() {
       <MapForm show={showMap} close={onOpenCloseMap} formik={formik} />
 
       <Button title="Create Restaurant" onPress={formik.handleSubmit} />
+
+      <Dialog isVisible={formik.isSubmitting}>
+        <Dialog.Loading />
+        <Text style={{ color: "white" }}>Creating restaurant</Text>
+      </Dialog>
     </View>
   );
 }
