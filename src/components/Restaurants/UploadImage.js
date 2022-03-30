@@ -16,8 +16,6 @@ export default function UploadImage(props) {
     });
 
     if (!result.cancelled) {
-      uploadImage(result.uri);
-
       formik.setFieldValue("images", [...formik.values.images, result.uri]);
     }
   };
