@@ -1,8 +1,12 @@
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Dimensions, Text } from "react-native";
 import { useState } from "react";
 import { useFormik } from "formik";
 
-import { Button, Input } from "@react-native-elements/base";
+import { Button, Image, Input } from "@react-native-elements/base";
+import * as Yup from "yup";
+
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { v4 as uuid } from "uuid";
 
 import UploadImage from "./UploadImage";
 import MapForm from "./MapForm";
@@ -15,10 +19,30 @@ const getColorIconMap = (formik) => {
   return "#c2c2c2";
 };
 
+const widthScreen = Dimensions.get("window").width;
+
 export default function AddRestaurants() {
   const [showMap, setShowMap] = useState(false);
 
   const onOpenCloseMap = () => setShowMap((prevState) => !prevState);
+
+  const uploadImage = async (uri) => {
+    const response = await fetch(uri);
+    const blob = await response.blob();
+
+    const storage = getStorage();
+    const storageRef = ref(storage, `restaurants/${uuid()}`);
+
+    uploadBytes(storageRef, blob).then((snapshot) => {
+      const imagePath = snapshot.metadata.fullPath;
+
+      const imageRef = ref(storage, imagePath);
+      const imageUrl = await getDownloadURL(imageRef);
+
+      formik.setFieldValue('uploadedImages', [...formik.values.uploadedImages, imageUrl]);
+
+    });
+  };
 
   const formik = useFormik({
     initialValues: {
@@ -26,14 +50,41 @@ export default function AddRestaurants() {
       address: "",
       description: "",
       images: [],
+      uploadedImages: []
     },
+    validationSchema: Yup.object().shape({
+      name: Yup.string().required(),
+      address: Yup.string().required(),
+      description: Yup.string().required(),
+    }),
     onSubmit: (values) => {
       console.log({ values });
+
+      const {images} = values;
+
+      images.forEach(async (uri) => {
+        await uploadImage(uri)
+      });
+    
     },
   });
 
+  console.log("images: ", formik.values.images[0]);
+
   return (
     <View>
+      {formik.values.images.length > 0 ? (
+        <View styles={styles.contain}>
+          <Image
+            source={{ uri: formik.values.images[0] }}
+            style={styles.image}
+          />
+        </View>
+      ) : (
+        <View style={styles.contain}>
+          <Text style={styles.image}>No image</Text>
+        </View>
+      )}
       <Input
         placeholder="Name"
         onChangeText={(txt) => formik.setFieldValue("name", txt)}
@@ -63,3 +114,13 @@ export default function AddRestaurants() {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  contain: {
+    marginBottom: 30,
+  },
+  image: {
+    height: 200,
+    width: widthScreen,
+  },
+});
