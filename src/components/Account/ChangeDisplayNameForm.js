@@ -13,8 +13,6 @@ import { getAuth, updateProfile } from "firebase/auth";
 export default function ChangeDisplayNameForm(props) {
   const displayName = getAuth().currentUser?.displayName || "";
 
-  console.log("diplay name: ", displayName, getAuth().currentUser);
-
   const formik = useFormik({
     initialValues: {
       displayName,

@@ -1,6 +1,8 @@
-import { View, StyleSheet, Dimensions, Text } from "react-native";
 import { useState } from "react";
 import { useFormik } from "formik";
+
+import { View, StyleSheet, Dimensions, Text } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import { Button, Image, Input, Dialog } from "@react-native-elements/base";
 import * as Yup from "yup";
@@ -28,7 +30,7 @@ const getColorIconMap = (formik) => {
 
 const widthScreen = Dimensions.get("window").width;
 
-const uploadImage = async (uri) => {
+const uploadImageToFirebase = async (uri) => {
   const response = await fetch(uri);
   const blob = await response.blob();
 
@@ -64,10 +66,11 @@ export default function AddRestaurants() {
     onSubmit: async (values) => {
       const { images, ...rest } = values;
 
+      rest.createdAt = new Date();
       rest.images = [];
 
       for (const uri of images) {
-        const imgUri = await uploadImage(uri);
+        const imgUri = await uploadImageToFirebase(uri);
         rest.images.push(imgUri);
       }
 
@@ -80,7 +83,7 @@ export default function AddRestaurants() {
   });
 
   return (
-    <View>
+    <KeyboardAwareScrollView>
       {formik.values.images.length > 0 ? (
         <View styles={styles.contain}>
           <Image
@@ -124,7 +127,7 @@ export default function AddRestaurants() {
         <Dialog.Loading />
         <Text style={{ color: "white" }}>Creating restaurant</Text>
       </Dialog>
-    </View>
+    </KeyboardAwareScrollView>
   );
 }
 

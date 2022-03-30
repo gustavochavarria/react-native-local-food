@@ -16,8 +16,6 @@ export default function Account() {
   useEffect(() => {
     const auth = getAuth();
 
-    console.log("auth: ", { auth });
-
     onAuthStateChanged(auth, (user) => {
       setHasLogged(user ? true : false);
     });

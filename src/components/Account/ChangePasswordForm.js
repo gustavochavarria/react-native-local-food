@@ -54,7 +54,6 @@ export default function ChangePasswordForm(props) {
           signOut(auth);
         });
       } catch (err) {
-        console.log("error here?", { err });
         setInvalid("Current Password invalid");
       }
     },
