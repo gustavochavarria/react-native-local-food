@@ -1,6 +1,6 @@
 import "react-native-get-random-values";
 
-import { initFirebase } from "./src/utils/firebase";
+import { app } from "./src/utils/firebase";
 
 import Navigation from "./src/navigation";
 

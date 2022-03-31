@@ -11,7 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 
 //firebase
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, collection, setDoc } from "firebase/firestore";
 import { db } from "../../utils/firebase";
 
 // import 'react-native-get-random-values'
@@ -30,19 +30,41 @@ const getColorIconMap = (formik) => {
 
 const widthScreen = Dimensions.get("window").width;
 
+function* idGenerator() {
+  const UUID = uuid();
+  let counter = 1;
+
+  while (true) {
+    yield `${UUID}-${counter}`;
+    counter++;
+  }
+}
+
+const idGenerated = idGenerator();
+
 const uploadImageToFirebase = async (uri) => {
-  const response = await fetch(uri);
-  const blob = await response.blob();
+  try {
+    console.log("UPLOADING IMAGE");
+    const response = await fetch(uri);
+    const blob = await response.blob();
 
-  const storage = getStorage();
-  const storageRef = ref(storage, `restaurants/${uuid()}`);
+    const id = idGenerated.next().value;
+    console.log("ID generated: ", id);
 
-  const snapshot = await uploadBytes(storageRef, blob);
+    const storage = getStorage();
+    const storageRef = ref(storage, `restaurants/${id}`);
 
-  const imageRef = ref(storage, snapshot.metadata.fullPath);
-  const imageUrl = await getDownloadURL(imageRef);
+    const snapshot = await uploadBytes(storageRef, blob);
 
-  return imageUrl;
+    const imageRef = ref(storage, snapshot.metadata.fullPath);
+    const imageUrl = await getDownloadURL(imageRef);
+
+    return imageUrl;
+  } catch (e) {
+    console.error(e);
+
+    return null;
+  }
 };
 
 export default function AddRestaurants() {
@@ -64,21 +86,32 @@ export default function AddRestaurants() {
       description: Yup.string(),
     }),
     onSubmit: async (values) => {
-      const { images, ...rest } = values;
+      try {
+        const { images, ...rest } = values;
 
-      rest.createdAt = new Date();
-      rest.images = [];
+        rest.createdAt = new Date();
+        rest.images = [];
 
-      for (const uri of images) {
-        const imgUri = await uploadImageToFirebase(uri);
-        rest.images.push(imgUri);
+        for (const uri of images) {
+          const imgUri = await uploadImageToFirebase(uri);
+
+          if (imgUri) {
+            rest.images.push(imgUri);
+          }
+        }
+        console.log("IMAGE COUNT: ", rest.images.length);
+
+        // const id = uuid();
+        // const docRef = doc(db, "restaurants", id);
+        const docRef = doc(collection(db, "restaurants"));
+
+        await setDoc(docRef, rest);
+
+        console.log("SAVED!!!");
+        navigation.goBack();
+      } catch (e) {
+        console.error(e);
       }
-
-      const id = uuid();
-
-      await setDoc(doc(db, "restaurants", id), rest);
-
-      navigation.goBack();
     },
   });
 
