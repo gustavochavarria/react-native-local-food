@@ -18,7 +18,7 @@ export default function Header(props) {
       <View style={styles.review}>
         <AirbnbRating
           isDisabled={true}
-          defaultRating={restaurant.rating || 1}
+          defaultRating={restaurant.totalRating || 1}
           count={5}
           size={14}
           showRating={false}
