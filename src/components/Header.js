@@ -1,15 +1,29 @@
 import { View, Text, StyleSheet } from "react-native";
 
+import { AirbnbRating } from "@react-native-elements/base";
+
 export default function Header(props) {
-  const { restaurant, reviews } = props;
+  const { restaurant } = props;
 
   return (
     <View style={styles.content}>
-      <View style={styles.titleView}>
-        <Text style={styles.name}>{restaurant.name}</Text>
+      <View style={styles.contentInfo}>
+        <View style={styles.titleView}>
+          <Text style={styles.name}>{restaurant.name}</Text>
+        </View>
+
+        <Text styles={styles.description}>{restaurant.description}</Text>
       </View>
 
-      <Text styles={styles.description}>{restaurant.description}</Text>
+      <View style={styles.review}>
+        <AirbnbRating
+          isDisabled={true}
+          defaultRating={restaurant.rating || 1}
+          count={5}
+          size={14}
+          showRating={false}
+        />
+      </View>
     </View>
   );
 }
@@ -17,6 +31,14 @@ export default function Header(props) {
 const styles = StyleSheet.create({
   content: {
     margin: 15,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  contentInfo: {
+    margin: 15,
+  },
+  review: {
+    justifyContent: "center",
   },
   titleView: {
     flexDirection: "row",
