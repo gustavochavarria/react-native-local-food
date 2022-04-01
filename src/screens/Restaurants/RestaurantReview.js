@@ -41,14 +41,13 @@ export default function RestaurantReview() {
         const auth = getAuth();
 
         const reviewData = {
+          ...values,
           idRestaurant: params.idRestaurant,
           idUser: auth.currentUser.uid,
           avatar: auth.currentUser.photoURL || "",
           rating: Number(values.rating),
           createdAt: new Date(),
         };
-
-        console.log({ reviewData });
 
         const docRef = doc(collection(db, "reviews"));
 
