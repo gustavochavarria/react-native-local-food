@@ -4,16 +4,25 @@ import { useState, useEffect } from "react";
 import { Button } from "@react-native-elements/base";
 import { useNavigation } from "@react-navigation/native";
 
-import { doc, onSnapshot } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  onSnapshot,
+  orderBy,
+  query,
+  where,
+} from "firebase/firestore";
 import { db } from "../../utils/firebase";
 import CarouselView from "../../components/Carousel";
 import Header from "../../components/Header";
+import ListReviews from "../../components/Restaurants/ListReviews";
 
 const { width } = Dimensions.get("window");
 
 export default function Restaurant(props) {
   const navigation = useNavigation();
   const [restaurant, setRestaurant] = useState(null);
+  const [reviews, setReviews] = useState(null);
   const { route } = props;
 
   useEffect(() => {
@@ -26,6 +35,17 @@ export default function Restaurant(props) {
       navigation.setOptions({
         title: data.name,
       });
+    });
+
+    console.log("restaurant id : ", route.params.id);
+
+    const q = query(
+      collection(db, "reviews"),
+      where("idRestaurant", "==", route.params.id)
+    );
+
+    onSnapshot(q, (snapshot) => {
+      setReviews(snapshot.docs);
     });
   }, [route.params.id]);
 
@@ -58,6 +78,8 @@ export default function Restaurant(props) {
             }}
             onPress={goToAddReview}
           />
+
+          {reviews && <ListReviews reviews={reviews} />}
         </>
       )}
     </ScrollView>
