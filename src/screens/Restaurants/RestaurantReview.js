@@ -1,5 +1,6 @@
 import { View, StyleSheet } from "react-native";
 import { useFormik } from "formik";
+import * as Yup from "yup";
 import { useRoute, useNavigation } from "@react-navigation/native";
 
 import { AirbnbRating, Input, Button } from "@react-native-elements/base";
@@ -33,9 +34,13 @@ export default function RestaurantReview() {
 
   const formik = useFormik({
     initialValues: {
-      title: "Amazing",
+      title: "",
+      comment: "",
       rating: 4,
     },
+    validationSchema: Yup.object().shape({
+      rating: Yup.number().min(1).max(5).required(),
+    }),
     onSubmit: async (values) => {
       try {
         const auth = getAuth();
