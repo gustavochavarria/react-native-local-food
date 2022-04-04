@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { View } from "react-native";
-import { ListItem, Icon } from "@react-native-elements/base";
+import { ListItem, Icon } from "react-native-elements";
 import Modal from "../Modal";
 
 import ChangeDisplayNameForm from "./ChangeDisplayNameForm";

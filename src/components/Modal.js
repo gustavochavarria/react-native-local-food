@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { Overlay } from "@react-native-elements/base";
+import { Overlay } from "react-native-elements";
 
 export default function Modal(props) {
   const { show, close, children } = props;

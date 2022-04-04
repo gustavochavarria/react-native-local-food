@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet } from "react-native";
 
-import { AirbnbRating } from "@react-native-elements/base";
+import { AirbnbRating } from "react-native-elements";
 
 export default function Header(props) {
   const { restaurant } = props;

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
-import { Button } from "@react-native-elements/base";
+import { Button } from "react-native-elements";
 
 import MapView from "react-native-maps";
 import * as Location from "expo-location";

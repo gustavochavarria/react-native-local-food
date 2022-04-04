@@ -4,7 +4,7 @@ import { useFormik } from "formik";
 import { View, StyleSheet, Dimensions, Text } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
-import { Button, Image, Input, Dialog } from "@react-native-elements/base";
+import { Button, Image, Input, Dialog } from "react-native-elements";
 import * as Yup from "yup";
 
 import { useNavigation } from "@react-navigation/native";

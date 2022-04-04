@@ -1,5 +1,5 @@
 import { View, ScrollView, Text, Image, StyleSheet } from "react-native";
-import { Button } from "@react-native-elements/base";
+import { Button } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 
 export default function UserGuest() {

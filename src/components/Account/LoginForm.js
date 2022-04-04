@@ -1,7 +1,7 @@
 import { useState, useRef } from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { Input, Button, Icon } from "@react-native-elements/base";
+import { Input, Button, Icon } from "react-native-elements";
 
 import { useFormik } from "formik";
 import * as Yup from "yup";

@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useRoute, useNavigation } from "@react-navigation/native";
 
-import { AirbnbRating, Input, Button } from "@react-native-elements/base";
+import { AirbnbRating, Input, Button } from "react-native-elements";
 
 import { getAuth } from "firebase/auth";
 import { collection, doc, getDoc, setDoc, updateDoc } from "firebase/firestore";

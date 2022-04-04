@@ -1,7 +1,7 @@
 import { StyleSheet, ScrollView, Dimensions } from "react-native";
 import { useState, useEffect } from "react";
 
-import { Button } from "@react-native-elements/base";
+import { Button } from "react-native-elements";
 import { useNavigation } from "@react-navigation/native";
 
 import {

@@ -1,4 +1,4 @@
-import { Image } from "@react-native-elements/base";
+import { Image } from "react-native-elements";
 import Carusel from "react-native-snap-carousel";
 
 export default function CarouselView(props) {

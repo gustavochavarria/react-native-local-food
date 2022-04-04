@@ -5,7 +5,7 @@ import {
   FlatList,
   TouchableOpacity,
 } from "react-native";
-import { Image } from "@react-native-elements/base";
+import { Image } from "react-native-elements";
 
 import { useNavigation } from "@react-navigation/native";
 

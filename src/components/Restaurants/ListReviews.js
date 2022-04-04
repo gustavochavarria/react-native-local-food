@@ -1,12 +1,9 @@
 import { View, Text, StyleSheet } from "react-native";
-import { AirbnbRating, ListItem, Avatar } from "@react-native-elements/base";
+import { AirbnbRating, ListItem, Avatar } from "react-native-elements";
 import { DateTime } from "luxon";
 
 export default function ListReviews(props) {
   const { reviews } = props;
-
-  console.log("arrived here");
-  console.log({ reviews });
 
   return (
     <View style={styles.content}>
@@ -18,7 +15,11 @@ export default function ListReviews(props) {
         ).toFormat("yyyy/LL/dd - hh:mm");
 
         return (
-          <ListItem key={data.id} bottomDivider containerStyle={styles.review}>
+          <ListItem
+            key={review.id}
+            bottomDivider
+            containerStyle={styles.review}
+          >
             <Avatar
               source={{
                 uri:

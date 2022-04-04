@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet } from "react-native";
 import React from "react";
-import { Avatar, Icon } from "@react-native-elements/base";
+import { Avatar, Icon } from "react-native-elements";
 
 import * as ImagePicker from "expo-image-picker";
 

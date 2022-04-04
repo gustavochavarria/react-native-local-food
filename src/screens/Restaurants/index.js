@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { View, Text, StyleSheet } from "react-native";
 
-import { Icon } from "@react-native-elements/base";
+import { Icon } from "react-native-elements";
 
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import { query, collection, orderBy, onSnapshot } from "firebase/firestore";
