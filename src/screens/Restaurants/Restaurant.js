@@ -26,29 +26,34 @@ export default function Restaurant(props) {
   const [reviews, setReviews] = useState(null);
   const { route } = props;
 
+  const restId = route?.params?.id;
+
   useEffect(() => {
     setRestaurant(null);
+    console.log("route", route.params);
+    console.log("restaurant id : ", restId);
 
-    onSnapshot(doc(db, "restaurants", route.params.id), (doc) => {
+    onSnapshot(doc(db, "restaurants", restId), (doc) => {
+      console.log(".....here");
       const data = doc.data();
       setRestaurant(data);
+
+      console.log("here");
 
       navigation.setOptions({
         title: data.name,
       });
     });
 
-    console.log("restaurant id : ", route.params.id);
-
     const q = query(
       collection(db, "reviews"),
-      where("idRestaurant", "==", route.params.id)
+      where("idRestaurant", "==", restId)
     );
 
     onSnapshot(q, (snapshot) => {
       setReviews(snapshot.docs);
     });
-  }, [route.params.id]);
+  }, [restId]);
 
   const goToAddReview = () => {
     navigation.navigate("add-restaurant-review", {

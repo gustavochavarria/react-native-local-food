@@ -9,14 +9,16 @@ import {
 } from "firebase/firestore";
 import { useState, useEffect } from "react";
 
-import { View, Text, ScrollView } from "react-native";
+import { Text, ScrollView } from "react-native";
+import { RestaurantFavorite } from "../components/Restaurants/RestaurantFavorite";
 
 import { db } from "../utils/firebase";
+
+const auth = getAuth();
 
 export default function Restaurants() {
   const [logged, setLogged] = useState(null);
   const [restaurants, setRestaurants] = useState(null);
-  const auth = getAuth();
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -25,13 +27,9 @@ export default function Restaurants() {
   }, []);
 
   useEffect(() => {
-    if (!auth.currentUser) {
-      return;
-    }
-
     const q = query(
       collection(db, "favorites"),
-      where("idUser", "==", auth?.currentUser?.uid)
+      where("userId", "==", auth?.currentUser?.uid)
     );
 
     onSnapshot(q, async (snapshot) => {
@@ -39,10 +37,12 @@ export default function Restaurants() {
 
       for await (const item of snapshot.docs) {
         const data = item.data();
-        const docRef = doc(db, "restaurants", data.idRestaurant);
+        const docRef = doc(db, "restaurants", data.restaurantId);
         const docSnap = await getDoc(docRef);
         const newData = docSnap.data();
-        newData.idFavorite = data.id;
+
+        newData.id = docSnap.id;
+        newData.favoriteId = item.id;
 
         favorites.push(newData);
       }
@@ -51,18 +51,22 @@ export default function Restaurants() {
     });
   }, [auth]);
 
+  console.log({ logged, restaurants });
+
   if (!logged) {
     return <Text>You are not logged.</Text>;
   }
 
-  if (!restaurants) {
+  if ((restaurants || []).length < 1) {
     return <Text>No favorites</Text>;
   }
 
   return (
     <ScrollView>
       {restaurants.map((restaurant) => {
-        <Text>{restaurant.name}</Text>;
+        return (
+          <RestaurantFavorite key={restaurant.id} restaurant={restaurant} />
+        );
       })}
     </ScrollView>
   );
