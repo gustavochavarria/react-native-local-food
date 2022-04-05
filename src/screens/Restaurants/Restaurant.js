@@ -16,6 +16,7 @@ import { db } from "../../utils/firebase";
 import CarouselView from "../../components/Carousel";
 import Header from "../../components/Header";
 import ListReviews from "../../components/Restaurants/ListReviews";
+import BtnFavorite from "../../components/Restaurants/BtnFavorite";
 
 const { width } = Dimensions.get("window");
 
@@ -64,6 +65,8 @@ export default function Restaurant(props) {
             height={200}
             arrayImages={restaurant.images}
           />
+
+          <BtnFavorite restaurantId={route.params.id} />
 
           <Header restaurant={restaurant} />
 
